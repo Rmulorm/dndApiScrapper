@@ -1,9 +1,10 @@
-.mat-icon {
-  height: "100%";
-  width: "100%";
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
 }
 
-.mat-card-avatar {
+.mat-card-header-text {
   display: flex;
   justify-content: center;
   align-content: center;
@@ -11,7 +12,12 @@
   align-items: center;
 }
 
-.mat-card-header-text {
+.mat-icon {
+  height: 100%;
+  width: 100%;
+}
+
+.mat-card-avatar {
   display: flex;
   justify-content: center;
   align-content: center;
