@@ -1,0 +1,27 @@
+<div *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div>
+<div *ngIf="error">Error :(</div>
+<div *ngIf="spells">
+  <mat-grid-list cols="2" rowHeight="2:1" gutterSize="30px">
+    <mat-grid-tile *ngFor="let spell of spells">
+      <mat-card class="spell-card">
+        <mat-card-header>
+          <div mat-card-avatar>
+            <mat-icon
+              svgIcon="{{ spell.schoolIcon }}"
+              aria-hidden="false"
+              aria-label="D&D Spells Icon"
+            ></mat-icon>
+          </div>
+          <mat-card-title>{{ spell.name }}</mat-card-title>
+          <mat-card-subtitle
+            >{{ spell.level }} level {{ spell.school.name }}</mat-card-subtitle
+          >
+          <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+        </mat-card-header>
+        <!-- <mat-card-title>{{ spell.name }}</mat-card-title> -->
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
