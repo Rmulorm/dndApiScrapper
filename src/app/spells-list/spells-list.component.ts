@@ -1,13 +1,14 @@
 import { Component, OnInit } from "@angular/core";
 import { Apollo, gql } from "apollo-angular";
-import { Spell } from "../types/dnd-api-types";
+import { Spell as ApiSpell } from "../types/dnd-api-types";
 
-interface SpellForList extends Spell {
+interface Spell extends ApiSpell {
   schoolIcon: string;
+  spellCategory: string;
 }
 
 type Response = {
-  spells: Spell[];
+  spells: ApiSpell[];
 };
 
 @Component({
@@ -16,7 +17,7 @@ type Response = {
   styleUrls: ["./spells-list.component.scss"],
 })
 export class SpellsListComponent implements OnInit {
-  spells: SpellForList[] = [];
+  spells: Spell[] = [];
   loading = true;
   error: any;
 
@@ -46,6 +47,10 @@ export class SpellsListComponent implements OnInit {
           this.spells.push({
             ...spell,
             schoolIcon: this.getSchoolIcon(spell.school.index),
+            spellCategory: this.getSpellCategory(
+              spell.level,
+              spell.school.name
+            ),
           });
         });
       });
@@ -53,5 +58,15 @@ export class SpellsListComponent implements OnInit {
 
   private getSchoolIcon(schoolName: string): string {
     return `${schoolName}-icon-svg`;
+  }
+
+  private getSpellCategory(level: number, spellSchool: string): string {
+    return `${this.getLevelWithEnumerator(level)} level ${spellSchool}`;
+  }
+
+  private getLevelWithEnumerator(level: number): string {
+    if (level === 1) return `${level}st`;
+    if (level === 2) return `${level}nd`;
+    return `${level}rd`;
   }
 }
