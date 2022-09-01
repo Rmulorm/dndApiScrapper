@@ -1,18 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { Apollo, gql } from "apollo-angular";
+import { Spell } from "../types/dnd-api-types";
 
-type School = {
-  index: string;
-  name: string;
-};
-
-type Spell = {
-  index: string;
-  name: string;
-  level: string;
-  school: School;
+interface SpellForList extends Spell {
   schoolIcon: string;
-};
+}
 
 type Response = {
   spells: Spell[];
@@ -24,7 +16,7 @@ type Response = {
   styleUrls: ["./spells-list.component.scss"],
 })
 export class SpellsListComponent implements OnInit {
-  spells: Spell[] = [];
+  spells: SpellForList[] = [];
   loading = true;
   error: any;
 
