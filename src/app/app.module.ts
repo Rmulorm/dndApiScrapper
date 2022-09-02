@@ -12,6 +12,7 @@ import { GraphQLModule } from "../graphql.module";
 import { TopBarComponent } from "./top-bar/top-bar.component";
 import { SpellsListComponent } from "./spells-list/spells-list.component";
 import { CategoriesListComponent } from "./categories-list/categories-list.component";
+import { FilterDialogComponent } from "./filter-dialog/filter-dialog.component";
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { CategoriesListComponent } from "./categories-list/categories-list.compo
     TopBarComponent,
     SpellsListComponent,
     CategoriesListComponent,
+    FilterDialogComponent,
   ],
   imports: [
     BrowserAnimationsModule,

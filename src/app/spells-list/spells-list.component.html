@@ -1,3 +1,9 @@
+<div class="button-tray">
+  <button mat-raised-button color="primary" (click)="onFilterClick()">
+    Filter
+  </button>
+</div>
+
 <div *ngIf="spells">
   <mat-grid-list cols="1" rowHeight="8em" gutterSize="16px">
     <mat-grid-tile *ngFor="let spell of spells">

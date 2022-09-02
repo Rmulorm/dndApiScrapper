@@ -1,16 +1,55 @@
 import { Component, OnInit } from "@angular/core";
-import { Apollo, gql } from "apollo-angular";
-import { Spell as ApiSpell } from "../types/dnd-api-types";
+import { MatDialog } from "@angular/material/dialog";
+import { ApolloQueryResult } from "@apollo/client/core";
+import { Apollo, gql, QueryRef } from "apollo-angular";
+import {
+  FilterDialogInput,
+  FilterDialogOutput,
+  openEditCourseDialog,
+  PossibleValue,
+} from "../filter-dialog/filter-dialog.component";
+import { MagicSchool, Spell as ApiSpell } from "../types/dnd-api-types";
 
 interface Spell extends ApiSpell {
   schoolIcon: string;
   spellCategory: string;
 }
 
-type Response = {
-  spells: ApiSpell[];
-};
+interface SpellsQueryVariables {
+  school: string | null;
+  level: number | null;
+}
 
+interface SpellsQueryResponse {
+  spells: ApiSpell[];
+}
+
+const spellsQuery = gql<SpellsQueryResponse, SpellsQueryVariables>`
+  query SpellsQuery($school: StringFilter, $level: IntFilter) {
+    spells(school: $school, level: $level) {
+      index
+      name
+      school {
+        index
+        name
+      }
+      level
+    }
+  }
+`;
+
+interface SchoolQueryResponse {
+  magicSchools: MagicSchool[];
+}
+
+const schoolQuery = gql<SchoolQueryResponse, any>`
+  query SchoolsQuery {
+    magicSchools {
+      index
+      name
+    }
+  }
+`;
 @Component({
   selector: "app-spells-list",
   templateUrl: "./spells-list.component.html",
@@ -21,39 +60,92 @@ export class SpellsListComponent implements OnInit {
   loading = true;
   error: any;
 
-  constructor(private apollo: Apollo) {}
+  spellsQuery: QueryRef<SpellsQueryResponse, SpellsQueryVariables>;
+  spellsQueryVariables: SpellsQueryVariables = {
+    school: null,
+    level: null,
+  };
+
+  magicSchools: MagicSchool[];
+
+  constructor(private apollo: Apollo, public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.apollo
-      .watchQuery({
-        query: gql<Response, any>`
-          query GetSpells {
-            spells {
-              index
-              name
-              level
-              school {
-                index
-                name
-              }
-            }
-          }
-        `,
-      })
-      .valueChanges.subscribe((result) => {
-        this.loading = result.loading;
-        this.error = result.error;
-        result?.data?.spells.forEach((spell) => {
-          this.spells.push({
-            ...spell,
-            schoolIcon: this.getSchoolIcon(spell.school.index),
-            spellCategory: this.getSpellCategory(
-              spell.level,
-              spell.school.name
-            ),
-          });
+    this.spellsQuery = this.apollo.watchQuery({
+      query: spellsQuery,
+    });
+
+    this.spellsQuery.valueChanges.subscribe((result) => {
+      this.updateSpellList(result);
+    });
+  }
+
+  onFilterClick(): void {
+    if (!this.magicSchools) {
+      this.apollo
+        .watchQuery({ query: schoolQuery })
+        .valueChanges.subscribe((result) => {
+          this.magicSchools = result?.data?.magicSchools;
         });
-      });
+    }
+
+    const dialogFilterInput = {
+      schoolFilter: {
+        property: "School",
+        possibleValues: this.magicSchools.map(
+          (school) =>
+            ({ value: school.index, name: school.name } as PossibleValue)
+        ),
+        selectedValue: this.spellsQueryVariables.school,
+      },
+      spellLevelFilter: {
+        property: "Spell Level",
+        possibleValues: Array.from(Array(10).keys()).map(
+          (num) =>
+            ({
+              value: num.toString(10),
+              name: num.toString(10),
+            } as PossibleValue)
+        ),
+        selectedValue: this.spellsQueryVariables.level?.toString(),
+      },
+    } as FilterDialogInput;
+
+    openEditCourseDialog(this.dialog, dialogFilterInput).subscribe(
+      async (result) => {
+        if (result) {
+          this.spellsQueryVariables = {
+            school: result?.schoolFilter,
+            level: result?.spellLevelFilter,
+          } as SpellsQueryVariables;
+          const response = await this.spellsQuery.refetch(
+            this.spellsQueryVariables
+          );
+          // this.updateSpellList(response);
+        }
+      }
+    );
+  }
+
+  private updateSpellList(
+    result: ApolloQueryResult<SpellsQueryResponse>,
+    isFreshQuery: boolean = true
+  ): void {
+    this.loading = result.loading;
+    this.error = result.error;
+    const spells = result?.data?.spells.map(
+      (spell) =>
+        ({
+          ...spell,
+          schoolIcon: this.getSchoolIcon(spell.school.index),
+          spellCategory: this.getSpellCategory(spell.level, spell.school.name),
+        } as Spell)
+    );
+    if (isFreshQuery) {
+      this.spells = spells;
+    } else {
+      this.spells.push(...spells);
+    }
   }
 
   private getSchoolIcon(schoolName: string): string {
