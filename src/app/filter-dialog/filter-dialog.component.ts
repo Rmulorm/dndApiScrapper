@@ -50,6 +50,14 @@ export class FilterDialogComponent {
     });
   }
 
+  onCleanClick(): void {
+    const result = {
+      schoolFilter: null,
+      spellLevelFilter: null,
+    } as FilterDialogOutput;
+    this.dialogRef.close(result);
+  }
+
   onCancelClick(): void {
     this.dialogRef.close();
   }
