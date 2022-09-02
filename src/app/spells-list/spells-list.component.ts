@@ -8,7 +8,13 @@ import {
   openEditCourseDialog,
   PossibleValue,
 } from "../filter-dialog/filter-dialog.component";
-import { MagicSchool, Spell as ApiSpell } from "../types/dnd-api-types";
+import {
+  MagicSchool,
+  OrderByDirection,
+  Spell as ApiSpell,
+  SpellOrder,
+  SpellOrderBy,
+} from "../types/dnd-api-types";
 
 interface Spell extends ApiSpell {
   schoolIcon: string;
@@ -18,6 +24,7 @@ interface Spell extends ApiSpell {
 interface SpellsQueryVariables {
   school: string | null;
   level: number | null;
+  order?: SpellOrder;
 }
 
 interface SpellsQueryResponse {
@@ -25,8 +32,12 @@ interface SpellsQueryResponse {
 }
 
 const spellsQuery = gql<SpellsQueryResponse, SpellsQueryVariables>`
-  query SpellsQuery($school: StringFilter, $level: IntFilter) {
-    spells(school: $school, level: $level) {
+  query SpellsQuery(
+    $school: StringFilter
+    $level: IntFilter
+    $order: SpellOrder
+  ) {
+    spells(school: $school, level: $level, order: $order) {
       index
       name
       school {
@@ -64,6 +75,18 @@ export class SpellsListComponent implements OnInit {
   spellsQueryVariables: SpellsQueryVariables = {
     school: null,
     level: null,
+    order: {
+      by: SpellOrderBy.Level,
+      direction: OrderByDirection.Ascending,
+      then_by: {
+        by: SpellOrderBy.School,
+        direction: OrderByDirection.Ascending,
+        then_by: {
+          by: SpellOrderBy.Name,
+          direction: OrderByDirection.Ascending,
+        },
+      },
+    },
   };
 
   magicSchools: MagicSchool[];
@@ -73,6 +96,7 @@ export class SpellsListComponent implements OnInit {
   ngOnInit() {
     this.spellsQuery = this.apollo.watchQuery({
       query: spellsQuery,
+      variables: this.spellsQueryVariables,
     });
 
     this.spellsQuery.valueChanges.subscribe((result) => {
