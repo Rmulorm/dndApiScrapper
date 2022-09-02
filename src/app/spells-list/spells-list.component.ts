@@ -78,18 +78,24 @@ export class SpellsListComponent implements OnInit {
     this.spellsQuery.valueChanges.subscribe((result) => {
       this.updateSpellList(result);
     });
+
+    this.apollo.query({ query: schoolQuery }).subscribe((result) => {
+      this.magicSchools = result?.data?.magicSchools;
+    });
   }
 
   onFilterClick(): void {
-    if (!this.magicSchools) {
-      this.apollo
-        .watchQuery({ query: schoolQuery })
-        .valueChanges.subscribe((result) => {
-          this.magicSchools = result?.data?.magicSchools;
-        });
-    }
+    if (this.magicSchools) {
+      const dialogFilterInput = this.createDialogFilterInput();
 
-    const dialogFilterInput = {
+      openEditCourseDialog(this.dialog, dialogFilterInput).subscribe(
+        async (result) => await this.filterDialogCloseCallback(result)
+      );
+    }
+  }
+
+  private createDialogFilterInput() {
+    return {
       schoolFilter: {
         property: "School",
         possibleValues: this.magicSchools.map(
@@ -110,21 +116,18 @@ export class SpellsListComponent implements OnInit {
         selectedValue: this.spellsQueryVariables.level?.toString(),
       },
     } as FilterDialogInput;
+  }
 
-    openEditCourseDialog(this.dialog, dialogFilterInput).subscribe(
-      async (result) => {
-        if (result) {
-          this.spellsQueryVariables = {
-            school: result?.schoolFilter,
-            level: result?.spellLevelFilter,
-          } as SpellsQueryVariables;
-          const response = await this.spellsQuery.refetch(
-            this.spellsQueryVariables
-          );
-          // this.updateSpellList(response);
-        }
-      }
-    );
+  private async filterDialogCloseCallback(
+    result?: FilterDialogOutput
+  ): Promise<void> {
+    if (result) {
+      this.spellsQueryVariables = {
+        school: result?.schoolFilter,
+        level: result?.spellLevelFilter,
+      } as SpellsQueryVariables;
+      await this.spellsQuery.refetch(this.spellsQueryVariables);
+    }
   }
 
   private updateSpellList(
