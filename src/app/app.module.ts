@@ -10,7 +10,7 @@ import { MatNativeDateModule } from "@angular/material/core";
 import { HttpClientModule } from "@angular/common/http";
 import { GraphQLModule } from "../graphql.module";
 import { TopBarComponent } from "./top-bar/top-bar.component";
-import { SpellsListComponent } from "./spells-list/spells-list.component";
+import { SpellsListComponent } from "./spell/spells-list/spells-list.component";
 import { CategoriesListComponent } from "./categories-list/categories-list.component";
 import { FilterDialogComponent } from "./filter-dialog/filter-dialog.component";
 

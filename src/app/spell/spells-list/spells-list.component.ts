@@ -8,14 +8,14 @@ import {
   FilterDialogOutput,
   openEditCourseDialog,
   PossibleValue,
-} from "../filter-dialog/filter-dialog.component";
+} from "../../filter-dialog/filter-dialog.component";
 import {
   MagicSchool,
   OrderByDirection,
   Spell as ApiSpell,
   SpellOrder,
   SpellOrderBy,
-} from "../types/dnd-api-types";
+} from "../../types/dnd-api-types";
 
 interface Spell extends ApiSpell {
   schoolIcon: string;
