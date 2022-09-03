@@ -1,4 +1,5 @@
-import { Component, OnInit } from "@angular/core";
+import { AfterViewInit } from "@angular/core";
+import { Component, HostListener, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ApolloQueryResult } from "@apollo/client/core";
 import { Apollo, gql, QueryRef } from "apollo-angular";
@@ -61,15 +62,20 @@ const schoolQuery = gql<SchoolQueryResponse, any>`
     }
   }
 `;
+
+const MINIMUM_COLUMN_WIDTH = 400;
+
 @Component({
   selector: "app-spells-list",
   templateUrl: "./spells-list.component.html",
   styleUrls: ["./spells-list.component.scss"],
 })
-export class SpellsListComponent implements OnInit {
+export class SpellsListComponent implements OnInit, AfterViewInit {
   spells: Spell[] = [];
   loading = true;
   error: any;
+
+  gridColumns: number;
 
   spellsQuery: QueryRef<SpellsQueryResponse, SpellsQueryVariables>;
   spellsQueryVariables: SpellsQueryVariables = {
@@ -106,6 +112,18 @@ export class SpellsListComponent implements OnInit {
     this.apollo.query({ query: schoolQuery }).subscribe((result) => {
       this.magicSchools = result?.data?.magicSchools;
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.onResize();
+  }
+
+  @HostListener("window:resize")
+  onResize() {
+    this.gridColumns =
+      window.innerWidth >= 2 * MINIMUM_COLUMN_WIDTH
+        ? Math.floor(window.innerWidth / MINIMUM_COLUMN_WIDTH)
+        : 1;
   }
 
   onFilterClick(): void {
