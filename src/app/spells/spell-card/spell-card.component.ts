@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { Spell } from "../spells-list/spells-list.component";
+import { Spell } from "../spells-types";
 
 @Component({
   selector: "app-spell-card",

@@ -16,12 +16,8 @@ import {
   SpellOrder,
   SpellOrderBy,
 } from "../../types/dnd-api-types";
+import { Spell } from "../spells-types";
 import { SpellsUtils } from "../SpellUtils";
-
-export interface Spell extends ApiSpell {
-  schoolIcon: string;
-  spellCategory: string;
-}
 
 interface SpellsQueryVariables {
   school: string | null;

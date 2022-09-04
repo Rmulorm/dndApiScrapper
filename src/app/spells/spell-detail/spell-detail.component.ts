@@ -5,22 +5,13 @@ import {
   AreaOfEffect,
   Class,
   Maybe,
-  Spell as ApiSpell,
   SpellAttackType,
   SpellComponent,
   SpellDc,
 } from "src/app/types/dnd-api-types";
 import { SpellsService } from "../spell.service";
+import { Spell } from "../spells-types";
 import { SpellsUtils } from "../SpellUtils";
-
-interface Spell extends ApiSpell {
-  spellCategory?: string;
-  rangeAreaText?: string;
-  componentsText?: string;
-  durationText?: string;
-  attackSaveText?: string;
-  classesNames?: string;
-}
 
 @Component({
   selector: "app-spell-detail",
