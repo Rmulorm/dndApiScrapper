@@ -16,6 +16,7 @@ import {
   SpellOrder,
   SpellOrderBy,
 } from "../../types/dnd-api-types";
+import { SpellsUtils } from "../SpellUtils";
 
 interface Spell extends ApiSpell {
   schoolIcon: string;
@@ -183,7 +184,10 @@ export class SpellsListComponent implements OnInit, AfterViewInit {
         ({
           ...spell,
           schoolIcon: this.getSchoolIcon(spell.school.index),
-          spellCategory: this.getSpellCategory(spell.level, spell.school.name),
+          spellCategory: SpellsUtils.getSpellCategory(
+            spell.level,
+            spell.school.name
+          ),
         } as Spell)
     );
     if (isFreshQuery) {
@@ -195,15 +199,5 @@ export class SpellsListComponent implements OnInit, AfterViewInit {
 
   private getSchoolIcon(schoolName: string): string {
     return `${schoolName}-icon-svg`;
-  }
-
-  private getSpellCategory(level: number, spellSchool: string): string {
-    return `${this.getLevelWithEnumerator(level)} level ${spellSchool}`;
-  }
-
-  private getLevelWithEnumerator(level: number): string {
-    if (level === 1) return `${level}st`;
-    if (level === 2) return `${level}nd`;
-    return `${level}rd`;
   }
 }

@@ -1,26 +1,27 @@
-<div *ngIf="spell$ | async as spell">
+<div *ngIf="spell">
   <h3>{{ spell.name }}</h3>
-  <p>{{ spell.level }} Level {{ spell.school.name }}</p>
+  <p>{{ spell.spellCategory }}</p>
 
   <mat-divider></mat-divider>
 
   <p>Casting Time: {{ spell.casting_time }}</p>
-  <p>
-    Range/Area: {{ spell.range }}/{{ spell.area_of_effect?.size }} -
-    {{ spell.area_of_effect?.type }}
-  </p>
-  <p>Components: {{ spell.components }} - {{ spell.material }}</p>
-  <p>
-    Duration: {{ spell.concentration ? "Concentration, " : ""
-    }}{{ spell.duration }}
-  </p>
-  <p>Attack/Save: TO DO</p>
+  <p>Range/Area: {{ spell.rangeAreaText }}</p>
+  <p>Components: {{ spell.componentsText }}</p>
+  <p>Duration: {{ spell.durationText }}</p>
+  <div *ngIf="spell.attackSaveText">
+    <p>Attack/Save: {{ spell.attackSaveText }}</p>
+  </div>
 
   <mat-divider></mat-divider>
 
-  <p>{{ spell.desc }}</p>
+  <div
+    class="spell-description"
+    *ngFor="let descriptionParagraph of spell.desc"
+  >
+    <p>{{ descriptionParagraph }}</p>
+  </div>
 
   <mat-divider></mat-divider>
 
-  <p>Classes: {{ spell.classes }}</p>
+  <p>Classes: {{ spell.classesNames }}</p>
 </div>
