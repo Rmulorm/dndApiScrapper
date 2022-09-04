@@ -6,7 +6,7 @@ import { SpellDetailComponent } from "./spell-detail/spell-detail.component";
 
 const spellsRoutes: Routes = [
   { path: "spells", component: SpellsListComponent },
-  { path: "spell/:id", component: SpellDetailComponent },
+  { path: "spells/:id", component: SpellDetailComponent },
 ];
 
 @NgModule({

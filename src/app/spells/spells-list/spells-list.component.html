@@ -7,7 +7,7 @@
 <div *ngIf="spells">
   <mat-grid-list [cols]="gridColumns" rowHeight="8em" gutterSize="16px">
     <mat-grid-tile *ngFor="let spell of spells">
-      <mat-card class="spell-card">
+      <mat-card class="spell-card" routerLink="{{ spell.index }}">
         <mat-card-header>
           <div mat-card-avatar>
             <mat-icon
