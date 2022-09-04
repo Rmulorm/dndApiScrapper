@@ -18,7 +18,7 @@ import {
 } from "../../types/dnd-api-types";
 import { SpellsUtils } from "../SpellUtils";
 
-interface Spell extends ApiSpell {
+export interface Spell extends ApiSpell {
   schoolIcon: string;
   spellCategory: string;
 }

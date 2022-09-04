@@ -1,10 +1,6 @@
-.button-tray {
-  margin-bottom: 16px;
-}
-
-app-spell-card {
-  display: flex;
+.mat-card {
   width: 100%;
+  cursor: pointer;
 }
 
 .mat-card-avatar {
@@ -36,10 +32,4 @@ app-spell-card {
 
 .mat-card-content {
   padding-top: 16px;
-}
-
-.loading-spinner {
-  display: flex;
-  justify-content: center;
-  justify-items: center;
 }

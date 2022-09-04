@@ -1,0 +1,17 @@
+<mat-card class="spell-card" routerLink="{{ spell.index }}">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon
+        svgIcon="{{ spell.schoolIcon }}"
+        aria-hidden="false"
+        aria-label="D&D Spells Icon"
+      ></mat-icon>
+    </div>
+    <div class="mat-card-header-text">
+      <mat-card-title>{{ spell.name }}</mat-card-title>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-card-subtitle>{{ spell.spellCategory }}</mat-card-subtitle>
+  </mat-card-content>
+</mat-card>

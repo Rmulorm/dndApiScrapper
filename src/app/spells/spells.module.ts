@@ -8,9 +8,10 @@ import { SpellsListComponent } from "./spells-list/spells-list.component";
 import { SpellDetailComponent } from "./spell-detail/spell-detail.component";
 
 import { SpellsRoutingModule } from "./spells-routing.module";
+import { SpellCardComponent } from "./spell-card/spell-card.component";
 
 @NgModule({
   imports: [CommonModule, FormsModule, SpellsRoutingModule, MaterialModule],
-  declarations: [SpellsListComponent, SpellDetailComponent],
+  declarations: [SpellsListComponent, SpellDetailComponent, SpellCardComponent],
 })
 export class SpellsModule {}
