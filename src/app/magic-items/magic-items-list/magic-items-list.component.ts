@@ -53,7 +53,7 @@ export class MagicItemsListComponent implements OnInit, AfterViewInit {
 
   gridColumns: number;
 
-  spellsQuery: QueryRef<
+  magicItemListQuery: QueryRef<
     MagicItemListQueryResponse,
     MagicItemListQueryVariables
   >;
@@ -72,12 +72,12 @@ export class MagicItemsListComponent implements OnInit, AfterViewInit {
   constructor(private apollo: Apollo) {}
 
   ngOnInit(): void {
-    this.spellsQuery = this.apollo.watchQuery({
+    this.magicItemListQuery = this.apollo.watchQuery({
       query: MAGIC_ITEM_LIST_QUERY,
       variables: this.spellsQueryVariables,
     });
 
-    this.spellsQuery.valueChanges.subscribe((result) => {
+    this.magicItemListQuery.valueChanges.subscribe((result) => {
       this.updateMagicItemList(result);
     });
   }
