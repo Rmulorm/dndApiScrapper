@@ -13,6 +13,7 @@ import { TopBarComponent } from "./top-bar/top-bar.component";
 import { CategoriesListComponent } from "./categories-list/categories-list.component";
 import { FilterDialogComponent } from "./filter-dialog/filter-dialog.component";
 import { SpellsModule } from "./spells/spells.module";
+import { MagicItemsModule } from "./magic-items/magic-items.module";
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { SpellsModule } from "./spells/spells.module";
     ReactiveFormsModule,
     SpellsModule,
     GraphQLModule,
+    MagicItemsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
