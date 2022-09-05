@@ -126,6 +126,7 @@ export type IEquipmentBase = {
 
 export enum MagicItemRarity {
   Varies = "VARIES",
+  Common = "COMMON",
   Uncommon = "UNCOMMON",
   Rare = "RARE",
   VeryRare = "VERY_RARE",
