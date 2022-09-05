@@ -1,6 +1,9 @@
 import { MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
-import { DND_RACES_ICON, DND_SPELL_ICON } from "./assets/categories-icons";
+import {
+  DND_SPELL_ICON,
+  DND_MAGIC_ITEMS_ICON,
+} from "./assets/categories-icons";
 import { DND_LOGO_ICON } from "./assets/core-icons";
 import {
   ABJURATION_ICON,
@@ -38,8 +41,8 @@ export default class CustomIconManager {
     sanitizer: DomSanitizer
   ) {
     iconRegistry.addSvgIconLiteral(
-      "dnd-races-svg",
-      sanitizer.bypassSecurityTrustHtml(DND_RACES_ICON)
+      "dnd-magic-items-svg",
+      sanitizer.bypassSecurityTrustHtml(DND_MAGIC_ITEMS_ICON)
     );
     iconRegistry.addSvgIconLiteral(
       "dnd-spells-svg",
