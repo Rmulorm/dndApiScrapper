@@ -1,6 +1,43 @@
 import { AfterViewInit, Component, HostListener, OnInit } from "@angular/core";
-import { MagicItemRarity } from "src/app/types/dnd-api-types";
+import { ApolloQueryResult } from "@apollo/client/core";
+import { Apollo, gql, QueryRef } from "apollo-angular";
+import {
+  MagicItem as ApiMagicItem,
+  MagicItemOrder,
+  MagicItemOrderBy,
+  OrderByDirection,
+} from "src/app/types/dnd-api-types";
 import { MagicItem } from "../magic-items-types";
+
+interface MagicItemListQueryVariables {
+  equipmentCategory: string | null;
+  order: MagicItemOrder;
+}
+
+interface MagicItemListQueryResponse {
+  magicItems: ApiMagicItem[];
+}
+
+const MAGIC_ITEM_LIST_QUERY = gql<
+  MagicItemListQueryResponse,
+  MagicItemListQueryVariables
+>`
+  query MagicItemsQuery(
+    $equipmentCategory: StringFilter
+    $order: MagicItemOrder
+  ) {
+    magicItems(equipment_category: $equipmentCategory, order: $order) {
+      index
+      name
+      desc
+      rarity
+      equipment_category {
+        index
+        name
+      }
+    }
+  }
+`;
 
 const MINIMUM_COLUMN_WIDTH = 400;
 
@@ -11,40 +48,52 @@ const MINIMUM_COLUMN_WIDTH = 400;
 })
 export class MagicItemsListComponent implements OnInit, AfterViewInit {
   magicItemList: MagicItem[] = [];
+  loading = true;
+  error: any;
 
   gridColumns: number;
-  constructor() {}
+
+  spellsQuery: QueryRef<
+    MagicItemListQueryResponse,
+    MagicItemListQueryVariables
+  >;
+  spellsQueryVariables: MagicItemListQueryVariables = {
+    equipmentCategory: null,
+    order: {
+      by: MagicItemOrderBy.EquipmentCategory,
+      direction: OrderByDirection.Ascending,
+      then_by: {
+        by: MagicItemOrderBy.Name,
+        direction: OrderByDirection.Ascending,
+      },
+    },
+  };
+
+  constructor(private apollo: Apollo) {}
 
   ngOnInit(): void {
-    this.magicItemList = [
-      {
-        index: "",
-        name: "Item 1",
-        rarity: MagicItemRarity.Rare,
-        equipment_category: {
-          index: "weapon",
-          name: "Weapon",
-        },
-      } as MagicItem,
-      {
-        index: "",
-        name: "Item 2",
-        rarity: MagicItemRarity.Uncommon,
-        equipment_category: {
-          index: "armor",
-          name: "Armor",
-        },
-      } as MagicItem,
-      {
-        index: "",
-        name: "Item 3",
-        rarity: MagicItemRarity.Legendary,
-        equipment_category: {
-          index: "potion",
-          name: "Potion",
-        },
-      } as MagicItem,
-    ];
+    this.spellsQuery = this.apollo.watchQuery({
+      query: MAGIC_ITEM_LIST_QUERY,
+      variables: this.spellsQueryVariables,
+    });
+
+    this.spellsQuery.valueChanges.subscribe((result) => {
+      this.updateMagicItemList(result);
+    });
+  }
+
+  updateMagicItemList(
+    result: ApolloQueryResult<MagicItemListQueryResponse>
+  ): void {
+    this.loading = result.loading;
+    this.error = result.error;
+    console.log(result);
+    this.magicItemList = result?.data?.magicItems.map(
+      (magicItem) =>
+        ({
+          ...magicItem,
+        } as MagicItem)
+    );
   }
 
   ngAfterViewInit(): void {
