@@ -1,1 +1,19 @@
-<p>Magic Item x</p>
+<mat-card class="magic-item-card" routerLink="{{ magicItem.index }}">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon
+        svgIcon="dnd-magic-items-svg"
+        aria-hidden="false"
+        aria-label="D&D Magic Item Icon"
+      ></mat-icon>
+    </div>
+    <div class="mat-card-header-text">
+      <mat-card-title>{{ magicItem.name }}</mat-card-title>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-card-subtitle>{{
+      magicItem.equipment_category.name
+    }}</mat-card-subtitle>
+  </mat-card-content>
+</mat-card>

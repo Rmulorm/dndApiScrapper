@@ -1,16 +1,7 @@
-<h1>Magic Items List</h1>
-
-<ul>
-  <li>
-    <app-magic-item-card></app-magic-item-card>
-  </li>
-  <li>
-    <app-magic-item-card></app-magic-item-card>
-  </li>
-  <li>
-    <app-magic-item-card></app-magic-item-card>
-  </li>
-  <li>
-    <app-magic-item-card></app-magic-item-card>
-  </li>
-</ul>
+<div *ngIf="magicItemList">
+  <mat-grid-list [cols]="gridColumns" rowHeight="8em" gutterSize="16px">
+    <mat-grid-tile *ngFor="let magicItem of magicItemList">
+      <app-magic-item-card [magicItem]="magicItem"></app-magic-item-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

@@ -1,0 +1,35 @@
+.mat-card {
+  width: 100%;
+  cursor: pointer;
+}
+
+.mat-card-avatar {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  align-items: center;
+}
+
+.mat-icon {
+  height: 100%;
+  width: 100%;
+}
+
+.mat-card-title {
+  margin-bottom: 0px;
+}
+
+.mat-card-header-text {
+  display: flex;
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  align-items: center;
+}
+
+.mat-card-content {
+  padding-top: 16px;
+}
