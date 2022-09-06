@@ -61,7 +61,7 @@ export class MagicItemsListComponent implements OnInit, AfterViewInit {
     equipmentCategory: null,
     order: {
       by: MagicItemOrderBy.EquipmentCategory,
-      direction: OrderByDirection.Ascending,
+      direction: OrderByDirection.Descending,
       then_by: {
         by: MagicItemOrderBy.Name,
         direction: OrderByDirection.Ascending,

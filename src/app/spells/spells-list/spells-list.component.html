@@ -5,7 +5,7 @@
 </div>
 
 <div *ngIf="spells">
-  <mat-grid-list [cols]="gridColumns" rowHeight="8em" gutterSize="16px">
+  <mat-grid-list [cols]="gridColumns" rowHeight="9em" gutterSize="16px">
     <mat-grid-tile *ngFor="let spell of spells">
       <app-spell-card [spell]="spell"></app-spell-card>
     </mat-grid-tile>

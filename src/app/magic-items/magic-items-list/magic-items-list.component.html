@@ -1,5 +1,5 @@
 <div *ngIf="magicItemList">
-  <mat-grid-list [cols]="gridColumns" rowHeight="8em" gutterSize="16px">
+  <mat-grid-list [cols]="gridColumns" rowHeight="9em" gutterSize="16px">
     <mat-grid-tile *ngFor="let magicItem of magicItemList">
       <app-magic-item-card [magicItem]="magicItem"></app-magic-item-card>
     </mat-grid-tile>
