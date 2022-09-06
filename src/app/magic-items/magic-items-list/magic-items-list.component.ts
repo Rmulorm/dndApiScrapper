@@ -87,7 +87,6 @@ export class MagicItemsListComponent implements OnInit, AfterViewInit {
   ): void {
     this.loading = result.loading;
     this.error = result.error;
-    console.log(result);
     this.magicItemList = result?.data?.magicItems.map(
       (magicItem) =>
         ({
