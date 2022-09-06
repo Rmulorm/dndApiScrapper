@@ -1,0 +1,13 @@
+<div *ngIf="magicItem">
+  <h3>{{ magicItem.name }}</h3>
+  <p>{{ magicItem.category }}</p>
+
+  <mat-divider></mat-divider>
+
+  <div
+    class="magic-item-description"
+    *ngFor="let descriptionParagraph of magicItem.description"
+  >
+    <p>{{ descriptionParagraph }}</p>
+  </div>
+</div>
